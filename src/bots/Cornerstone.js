@@ -1,9 +1,12 @@
 import { ActivityHandler } from 'botbuilder';
 import { IntroCard } from '../components/IntroCard';
+import QnaHandler from './../components/QnaHandler';
 
 class Cornerstone extends ActivityHandler {
 	constructor() {
 		super();
+
+		this.QnA = new QnaHandler();
 
 		/**
 		|--------------------------------------------------
@@ -23,12 +26,8 @@ class Cornerstone extends ActivityHandler {
 					await this.sendIntroCard( context );
 					break;
 				default:
-					await context.sendActivity(
-						'This is a simple Welcome Bot sample. You can say \'intro\' to see the introduction card. If you are running this bot in the Bot Framework Emulator, press the \'Start Over\' button to simulate user joining a bot or a channel'
-					);
+					await this.QnA.search( context );
 			}
-
-			await this.userState.saveChanges( context );
 			await next();
 		} );
 
